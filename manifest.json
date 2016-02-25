@@ -1,0 +1,41 @@
+{
+  "name": "BBBI - Better BitBucket Issues",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Improves bit bucket issues. Quick edit",
+  "homepage_url": "http://extensionizr.com",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "scripts": [
+      "src/options_custom/lib/store.js",
+      "src/bg/background.js"
+    ],
+    "persistent": false
+  },
+  "options_page": "src/options_custom/index.html",
+  "permissions": [
+    "https://bitbucket.org/*",
+    "https://api.bitbucket.org/*",
+    "identity"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://bitbucket.org/*/*/issues*"
+      ],
+      "css": [
+        "src/inject/inject.css"
+      ],
+      "js": [
+        "js/jquery/jquery.min.js",
+        "js/easyModal/jquery.easyModal.js",
+        "src/inject/inject.js"
+      ]
+    }
+  ]
+}

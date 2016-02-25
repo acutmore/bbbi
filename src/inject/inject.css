@@ -1,0 +1,14 @@
+/**
+ * Stop issue Title column becoming tiny when page width is narrow
+ **/
+.issues-list th:first-child {
+  min-width: 300px;
+}
+
+#bbbi-modal {
+    color: #333;
+		width: 600px;
+		padding: 2em;
+		box-shadow: 1px 1px 3px rgba(0,0,0,0.35);
+		background-color: white;
+}
