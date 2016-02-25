@@ -1,9 +1,9 @@
 {
-  "name": "BBBI - Better BitBucket Issues",
+  "name": "BBBI - Better Bitbucket Issues",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Improves bit bucket issues. Quick edit",
-  "homepage_url": "http://extensionizr.com",
+  "description": "Improves Bitbucket issues. CSS fixes and quick access to issues from list",
+  "homepage_url": "https://github.com/acutmore/bbbi",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
