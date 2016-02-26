@@ -17,6 +17,16 @@
   font-weight: bold;
 }
 
+.bbbi-editable {
+  cursor: pointer;
+}
+
+.bbbi-editable:hover::after {
+  content: "\00a0 edit?";
+  color: green;
+  font-size: 1em;
+}
+
 .bbbi-modal-body {
 
 }
@@ -30,3 +40,15 @@
     color: #14892C;
     font-size: 1.2em;
 }
+
+.bbbi-spinner {
+  width: 150px;height: 150px;
+  -webkit-animation: sweep 1s infinite linear;
+  border-radius:75px;
+  border-bottom:5px solid blue;
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  z-index: 999;
+}
+@-webkit-keyframes sweep { to { -webkit-transform: rotate(360deg); } }
