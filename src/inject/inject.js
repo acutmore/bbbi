@@ -9,21 +9,46 @@ chrome.extension.sendMessage({}, (response) => {
 });
 
 function init(){
+  var modal_html = '<div id="bbbi-modal">' +
+	 '<span class="bbbi-modal-title">No issue</span><br>' +
+	'<span class="bbbi-modal-body"></span><br>' +
+	'<span class="bbbi-modal-actions">' +
+	'<div class="aui-buttons">' +
+	    '<a id="bbbi-open" class="aui-button aui-button-primary" href="">Open</a>' +
+	    '<a id="bbbi-resolve" class="aui-button aui-button-primary" href="">Resolve</a>' +
+	'</div>' +
+	'</div>';
 
-	$('body').append('<span id="bbbi-modal"><span id="bbbi_title">No issue</span><br><span id="bbbi_body"></span></span>');
+	$('body').append(modal_html);
 	var modal = $('#bbbi-modal');
 	modal.easyModal({
 		top: 200,
 		overlay: 0.2
 	});
 
-	modal.update = function(issueNumber){
-		$('#bbbi_title', modal).html("Issue #" + issueNumber);
-		var url = getURL("/" + issueNumber)
-		request(url).then((issue) => {
-			$('#bbbi_title', modal).html("#" + issueNumber + " " +	issue.title);
-			$('#bbbi_body', modal).html(issue.content);
-		});
+	$('#bbbi-open', modal).click((e) => {
+		e.preventDefault();
+		updateIssue(modal.active_issue_number, {"status": "open"});
+	});
+
+	$('#bbbi-resolve', modal).click((e) => {
+		e.preventDefault();
+		updateIssue(modal.active_issue_number, {"status": "resolved"});
+	});
+
+	modal.update = function(issueNumber, force){
+    if (force || modal.active_issue_number != issueNumber){
+			modal.active_issue_number = null;
+			$('.bbbi-modal-title', modal).html("Issue #" + issueNumber);
+			$('.bbbi-modal-body', modal).html("...");
+
+			var url = getURL("/" + issueNumber)
+			request(url).then((issue) => {
+				modal.active_issue_number = issueNumber;
+				$('.bbbi-modal-title', modal).html("Issue #" + issueNumber + " " +	issue.title);
+				$('.bbbi-modal-body', modal).html(issue.content);
+			});
+	  }
 	};
 
   getToken((t) => { request.token = t; });
@@ -34,8 +59,8 @@ function init(){
 		var issueNumber =  extractIssueNumber(elem.title);
 		if (issueNumber != null && issueNumber != NaN){
 
-			var editLink = $($('<span>+</span>')[0]);
-			$(elem).after('&nbsp;', editLink);
+			var editLink = $($('<span class="bbbi-plus"></span>')[0]);
+			$(elem).after(editLink);
 			editLink.click(()=>{
 				modal.update(issueNumber);
 			  modal.trigger('openModal');
@@ -58,18 +83,24 @@ function getURL(path){
 	return "https://api.bitbucket.org/1.0/repositories" + document.location.pathname + path;
 }
 
-function request(url, no_retry){
-	var myHeaders = new Headers();
-	myHeaders.append("Authorization", "Bearer " + request.token)
-	var myInit = { headers: myHeaders };
+function request(url, init, headers, no_retry){
+	if (headers == null)
+		headers = new Headers();
 
-	return fetch(url, myInit).then((response) => {
+	headers.set("Authorization", "Bearer " + request.token)
+
+	if (init == null)
+	  init = {};
+
+	init.headers = headers;
+
+	return fetch(url, init).then((response) => {
 		if (response.ok)
 	    return response.json();
 		else if (response.status == 401 && !no_retry){
 			// Token invalid / expired
 			return login().then(() => {
-					return request(url, true);
+					return request(url, init, headers, no_retry);
 			});
 		}
 		else
@@ -84,4 +115,23 @@ function login(){
 			resolve(response.token);
 		});
 	});
+}
+
+function updateIssue(issueNumber, update){
+	if (issueNumber != null){
+
+		var headers = new Headers();
+		headers.append("Content-Type", "application/json");
+
+		var url = getURL("/" + issueNumber);
+
+		request(url, {
+			  method: 'PUT',
+			  body: JSON.stringify(update)
+		  },
+	    headers
+		).then((issue) => {
+		     location.reload();
+		});
+	}
 }

@@ -12,3 +12,21 @@
 		box-shadow: 1px 1px 3px rgba(0,0,0,0.35);
 		background-color: white;
 }
+
+.bbbi-modal-title {
+  font-weight: bold;
+}
+
+.bbbi-modal-body {
+
+}
+
+.bbbi-plus {
+  cursor:pointer;
+}
+
+.bbbi-plus::after {
+    content: "\00a0+\00a0";
+    color: #14892C;
+    font-size: 1.2em;
+}
