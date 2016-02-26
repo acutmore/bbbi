@@ -1,6 +1,6 @@
 // Send message to make sure background.js is awake
-chrome.extension.sendMessage({}, function(response) {
-	var readyStateCheckInterval = setInterval(function() {
+chrome.extension.sendMessage({}, (response) => {
+	var readyStateCheckInterval = setInterval(() => {
 		if (document.readyState === "complete") {
 			clearInterval(readyStateCheckInterval);
 			init();
@@ -26,8 +26,7 @@ function init(){
 		});
 	};
 
-  var token;
-  getToken(function(t){ token = t; request.token = t; });
+  getToken((t) => { request.token = t; });
 
 	// For each link to issue
 	$('.issues-list tbody tr .execute').each( (i, elem) => {
@@ -50,7 +49,7 @@ function extractIssueNumber(str){
 }
 
 function getToken(consumer){
-	chrome.runtime.sendMessage({action: "get_token"}, function(response) {
+	chrome.runtime.sendMessage({action: "get_token"}, (response) => {
 		consumer(response.token);
 	});
 }
@@ -59,13 +58,30 @@ function getURL(path){
 	return "https://api.bitbucket.org/1.0/repositories" + document.location.pathname + path;
 }
 
-function request(url){
-
+function request(url, no_retry){
 	var myHeaders = new Headers();
 	myHeaders.append("Authorization", "Bearer " + request.token)
 	var myInit = { headers: myHeaders };
 
-	return fetch(url, myInit).then(function(response) {
-    return response.json();
+	return fetch(url, myInit).then((response) => {
+		if (response.ok)
+	    return response.json();
+		else if (response.status == 401 && !no_retry){
+			// Token invalid / expired
+			return login().then(() => {
+					return request(url, true);
+			});
+		}
+		else
+		  throw new Error("unknown request response state");
+	});
+}
+
+function login(){
+  return new Promise( (resolve, reject) => {
+		chrome.runtime.sendMessage({action: "login"}, (response) => {
+			request.token = response.token;
+			resolve(response.token);
+		});
 	});
 }
