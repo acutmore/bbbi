@@ -2,7 +2,7 @@
 
 [Chrome Web Store Link](https://chrome.google.com/webstore/detail/hiafofmjbiglipbdmefenmgcimbfbpbc/publish-accepted)
 
-Adds a '+' icon to each issue on the issues table. Allowing to quickly view the issue details and open/resolve that issue.
+Adds icons to each issue on the issues table. Allowing to quickly view and edit the issue
 
 Sets a min-width on the first column of the issues table improving the display in a narrow window.
 
