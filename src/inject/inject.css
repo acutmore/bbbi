@@ -31,14 +31,8 @@
 
 }
 
-.bbbi-plus {
+.bbbi-icon {
   cursor:pointer;
-}
-
-.bbbi-plus::after {
-    content: "\00a0+\00a0";
-    color: #14892C;
-    font-size: 1.2em;
 }
 
 .bbbi-spinner {

@@ -90,12 +90,18 @@ function init(){
 		var issueNumber =  extractIssueNumber(elem.title);
 		if (issueNumber != null && issueNumber != NaN){
 
-			var editLink = $($('<span class="bbbi-plus"></span>')[0]);
+			var editLink = $('<span>&nbsp;</span><a href="' +
+				window.document.location.pathname + "/edit/" + issueNumber +
+			 '"><span class="aui-icon aui-icon-small aui-iconfont-edit-small bbbi-icon" data-unicode="UTF+f141"></span></a>');
 			$(elem).after(editLink);
-			editLink.click(()=>{
+
+			var modalLink = $('<span>&nbsp;</span><span class="aui-icon aui-icon-small aui-iconfont-info bbbi-icon" data-unicode="UTF+f16f"></span>');
+			$(elem).after(modalLink);
+			modalLink.click(()=>{
 				modal.update(issueNumber);
 			  modal.trigger('openModal');
 			});
+
 		}
 	});
 }
