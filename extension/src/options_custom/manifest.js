@@ -23,6 +23,13 @@ this.manifest = {
             "name": "token",
             "type": "description",
             "text": i18n.get("no_token"),
+        },
+        {
+            "tab": i18n.get("auth"),
+            "group": i18n.get("token"),
+            "name": "refresh_token",
+            "type": "description",
+            "text": i18n.get("no_refresh_token"),
         }
     ]
 };

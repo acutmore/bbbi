@@ -21,6 +21,7 @@
   "permissions": [
     "https://bitbucket.org/*",
     "https://api.bitbucket.org/*",
+    "https://positiveanalogue.com/bbbi/*",
     "identity"
   ],
   "content_scripts": [

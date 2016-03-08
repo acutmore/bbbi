@@ -33,5 +33,8 @@ this.i18n = {
     },
     "no_token" : {
       "en": "No token acquired"
+    },
+    "no_refresh_token" : {
+      "en": "No refresh token exists"
     }
 };
