@@ -17,10 +17,10 @@ function getToken(){
 
 function setToken(token, refresh_token, callback){
   if (token != null){
-    settings.set('token', t);
+    settings.set('token', token);
 
     if (refresh_token != null)
-      settings.set('refresh_token', r);
+      settings.set('refresh_token', refresh_token);
 
     if (callback)
       callback({token: token});
@@ -51,15 +51,17 @@ function requestToken(callback) {
   if (cached_refresh_token != null){
     getTokenFromRefreshToken(cached_refresh_token)
     .then(function(response){
+      settings.set('refresh_token', null);
       var t = response.access_token;
 
       if (t != null){
-        setToken(t, reponse.refresh_token, callback);
+        setToken(t, response.refresh_token, callback);
       }
       else
         login(callback, true);
     })
     .catch (function(err){
+      settings.set('refresh_token', null);
       login(callback, true);
     });
   }
@@ -86,6 +88,8 @@ function login(callback, fallback){
 
         getTokenFromCode(c).then(function(response){
           setToken(response.access_token, response.refresh_token, callback);
+        }).catch(function(){
+          login(callback, true);
         });
       }
     }
