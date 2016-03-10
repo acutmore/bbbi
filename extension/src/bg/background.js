@@ -2,7 +2,7 @@ var settings = new Store("settings");
 
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     if (request.action == "login"){
-      return requestToken(sendResponse);
+      requestToken(sendResponse);
       return true; // return true -> indicates async callback response
     }
     else if (request.action == "get_token")
