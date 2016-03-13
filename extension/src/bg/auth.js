@@ -1,4 +1,4 @@
-define('auth', ['store/store'], function (Store) {
+define(['store/store'], function (Store) {
 
     var settings = new Store("settings");
 
