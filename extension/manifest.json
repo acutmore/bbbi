@@ -12,8 +12,8 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-      "src/options_custom/lib/store.js",
-      "src/bg/background.js"
+      "js/requirejs/require.js",
+      "src/bg/main.js"
     ],
     "persistent": false
   },
