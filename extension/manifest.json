@@ -1,6 +1,6 @@
 {
   "name": "BBBI - Better Bitbucket Issues",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "manifest_version": 2,
   "description": "Improves Bitbucket issues. CSS fixes and quick access to issues from list",
   "homepage_url": "https://github.com/acutmore/bbbi",
