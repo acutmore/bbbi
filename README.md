@@ -8,6 +8,7 @@ Sets a min-width on the first column of the issues table improving the display i
 
 ## Tests
 
+    cd extension
     npm install --dev
     npm test
 
