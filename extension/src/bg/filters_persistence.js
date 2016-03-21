@@ -1,7 +1,8 @@
-define(['store/store'], function (Store) {
+define(['store/store', 'util/util'], function (Store, Util) {
   'use-strict';
 
   var settings = new Store("filters_persistence");
+  var util = new Util();
 
   var module = {};
 
@@ -10,7 +11,7 @@ define(['store/store'], function (Store) {
        (request_details) => {
          // Callback
          var repo = getRepoFromUrl(request_details.url);
-         var filters = URLToArray(request_details.url);
+         var filters = util.URLToArray(request_details.url);
 
          var redirect_url = request_details.url;
          if (filters.length == 0){
@@ -54,40 +55,11 @@ define(['store/store'], function (Store) {
      );
    };
 
-  function URLToArray(url) {
-      var questionMark = url.indexOf('?');
-
-      if (questionMark === -1){
-        return [];
-      }
-
-      var parameters = [];
-      var pairs = url.substring(questionMark + 1).split('&');
-      for (var i = 0; i < pairs.length; i++) {
-          if(!pairs[i])
-              continue;
-          var pair = pairs[i].split('=');
-          parameters.push([decodeURIComponent(pair[0]), decodeURIComponent(pair[1])]);
-       }
-       return parameters;
-  }
-
   function getRepoFromUrl(url){
-    var start_of_repo = url.nthIndexOf("/", 0, 2) + 1;
-    var end_of_repo = url.nthIndexOf("/", start_of_repo, 1);
+    var start_of_repo = util.nthIndexOfSubString(url,  '/', 2) + 1;
+    var end_of_repo = util.nthIndexOfSubString(url, '/', 1, start_of_repo);
     return url.substring(start_of_repo, end_of_repo);
   }
-
-  String.prototype.nthIndexOf = String.prototype.nthIndexOf || function(str, start, n){
-    n = n || 0;
-    n = Math.max(n, 0);
-    if (n === 0)
-      return this.indexOf(str, start);
-    else {
-      var r = this.nthIndexOf(str, start, n-1);
-      return r === -1 ? -1 : this.indexOf(str, 1 + r);
-    }
-  };
 
   return module;
 

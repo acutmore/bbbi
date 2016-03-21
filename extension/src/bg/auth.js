@@ -1,4 +1,6 @@
-define(['store/store'], function (Store) {
+define(['store/store', 'util/util'], function (Store, Util) {
+
+    var getURLParameter = (new Util).getURLParameter;
 
     var settings = new Store("settings");
 
@@ -17,10 +19,6 @@ define(['store/store'], function (Store) {
           if (callback)
             callback({token: token});
         }
-      };
-
-      var getURLParameter = function (url, name) {
-        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(url)||[,""])[1].replace(/\+/g, '%20'))||null;
       };
 
       var getTokenFromCode = function (code){

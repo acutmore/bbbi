@@ -1,7 +1,8 @@
 require.config({
         baseUrl: "./src/bg",
         paths: {
-          "store" : "/src/options_custom/lib"
+          "store" : "/src/options_custom/lib",
+          "util" : "/src/util",
         }
     });
 
