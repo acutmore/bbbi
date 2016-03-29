@@ -37,6 +37,7 @@
       "js": [
         "js/jquery/jquery.min.js",
         "js/easyModal/jquery.easyModal.js",
+        "src/inject/requests.js",
         "src/inject/inject.js"
       ]
     }
