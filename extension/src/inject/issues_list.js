@@ -11,60 +11,62 @@ var modal_html = '<div id="bbbi-modal">' +
   '</div>';
 
 $('body').append(modal_html);
-var modal = $('#bbbi-modal');
+var $modal = $('#bbbi-modal');
+var $modalTitle = $('.bbbi-modal-title', $modal);
+var $modalBody= $('.bbbi-modal-body', $modal);
 
-modal.easyModal({
+$modal.easyModal({
   top: 200,
   overlay: 0.2
 });
 
-$('#bbbi-open', modal).click((e) => {
+$('#bbbi-open', $modal).click((e) => {
   e.preventDefault();
-  updateIssue(modal.issue_number, {"status": "open"}, true);
+  updateIssue($modal.issue_number, {"status": "open"}, true);
 });
 
-$('#bbbi-resolve', modal).click((e) => {
+$('#bbbi-resolve', $modal).click((e) => {
   e.preventDefault();
-  updateIssue(modal.issue_number, {"status": "resolved"}, true);
+  updateIssue($modal.issue_number, {"status": "resolved"}, true);
 });
 
-$('.bbbi-modal-title', modal).click((e) => {
+$modalTitle.click((e) => {
   e.preventDefault();
-  if (modal.active_issue_number == null) return;
+  if ($modal.active_issue_number == null) return;
 
-  var update = window.prompt("New Title", modal.issue.title);
+  var update = window.prompt("New Title", $modal.issue.title);
 
   if (update != null){
-    updateIssue(modal.active_issue_number, {"title": update}, true);
+    updateIssue($modal.active_issue_number, {"title": update}, true);
   }
 });
 
-$('.bbbi-modal-body', modal).click((e) => {
+$modalBody.click((e) => {
   e.preventDefault();
-  if (modal.active_issue_number == null) return;
+  if ($modal.active_issue_number == null) return;
 
-  var update = window.prompt("New Description", modal.issue.content);
+  var update = window.prompt("New Description", $modal.issue.content);
 
   if (update != null){
-    updateIssue(modal.active_issue_number, {"content": update}, true);
+    updateIssue($modal.active_issue_number, {"content": update}, true);
   }
 });
 
-modal.update = function(issueNumber, force){
-  modal.issue_number = issueNumber;
+$modal.update = function(issueNumber, force){
+  $modal.issue_number = issueNumber;
 
-  if (force || modal.active_issue_number != issueNumber){
-    modal.active_issue_number = null;
-    modal.issue = null;
-    $('.bbbi-modal-title', modal).html("Issue #" + issueNumber);
-    $('.bbbi-modal-body', modal).html("...");
+  if (force || $modal.active_issue_number != issueNumber){
+    $modal.active_issue_number = null;
+    $modal.issue = null;
+    $modalTitle.html("Issue #" + issueNumber);
+    $modalBody.html("...");
 
     var url = getURL("/" + issueNumber)
     request(url).then((issue) => {
-      modal.active_issue_number = issueNumber;
-      modal.issue = issue;
-      $('.bbbi-modal-title', modal).html("Issue #" + issueNumber + " " +  issue.title);
-      $('.bbbi-modal-body', modal).html(issue.content);
+      $modal.active_issue_number = issueNumber;
+      $modal.issue = issue;
+      $modalTitle.html("Issue #" + issueNumber + " " +  issue.title);
+      $modalBody.html(issue.content);
     });
   }
 };
@@ -76,15 +78,18 @@ $('.issues-list tbody tr .execute').each( (i, elem) => {
   if (issueNumber != null && issueNumber != NaN){
 
     var editLink = $('<span>&nbsp;</span><a href="' +
-      window.document.location.pathname + "/edit/" + issueNumber +
+      window.document.location.pathname +
+      "/edit/" +
+      issueNumber +
      '"><span class="aui-icon aui-icon-small aui-iconfont-edit-small bbbi-icon" data-unicode="UTF+f141"></span></a>');
+
     $(elem).after(editLink);
 
     var modalLink = $('<span>&nbsp;</span><span class="aui-icon aui-icon-small aui-iconfont-info bbbi-icon" data-unicode="UTF+f16f"></span>');
     $(elem).after(modalLink);
     modalLink.click(()=>{
-      modal.update(issueNumber);
-      modal.trigger('openModal');
+      $modal.update(issueNumber);
+      $modal.trigger('openModal');
     });
 
   }
