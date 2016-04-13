@@ -5,6 +5,10 @@
   min-width: 300px;
 }
 
+.issues-list td.milestone>div {
+  width: auto !important;
+}
+
 #bbbi-modal {
     color: #333;
 		width: 600px;
