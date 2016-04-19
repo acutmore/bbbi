@@ -9,6 +9,15 @@
   width: auto !important;
 }
 
+.issues-list td.version>div {
+  width: auto !important;
+}
+
+.issues-list .votes {
+  background-color: red !important;
+  display: none;
+}
+
 #bbbi-modal {
     color: #333;
 		width: 600px;
