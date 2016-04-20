@@ -2,9 +2,11 @@
 
 [Chrome Web Store Link](https://chrome.google.com/webstore/detail/hiafofmjbiglipbdmefenmgcimbfbpbc/publish-accepted)
 
-Adds icons to each issue on the issues table. Allowing to quickly view and edit the issue
-
-Sets a min-width on the first column of the issues table improving the display in a narrow window.
+- Adds clickable icons to each issue on the issues table. Allowing to quickly view and edit the issue
+- Persists any filtering by component, version or milestone (per repo)
+- Limits the 'title' column becoming too narrow
+- Grows the 'milestone' & 'version' column to accommodate for the longer values
+- Hides the 'votes' column.
 
 ## Tests
 
