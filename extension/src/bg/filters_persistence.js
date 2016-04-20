@@ -6,6 +6,23 @@ define(['store/store', 'util/util'], function (Store, Util) {
 
   var module = {};
 
+  function processFilter(filters, setting, param){
+    var redirect_url = "";
+    if (filters.length == 0){
+      // Use cached components
+      var cached_filters = settings.get(setting) || [];
+      cached_filters.forEach((f) => {
+        f = f.replace('+', ' ');
+        redirect_url += "&" + param + "=" + encodeURIComponent(f);
+      });
+    }
+    else {
+      // Save comonents
+      settings.set(setting, filters);
+    }
+    return redirect_url;
+  }
+
   module.init = function(){
     chrome.webRequest.onBeforeRequest.addListener(
        (request_details) => {
@@ -17,26 +34,35 @@ define(['store/store', 'util/util'], function (Store, Util) {
          if (filters.length == 0){
             // Clear cache
             settings.set('components_' + repo, []);
+            settings.set('versions_' + repo, []);
+            settings.set('milestones_' + repo, []);
          }
          else {
             // Extract component filters
             var component_filters = [];
+            var version_filters = [];
+            var milestone_filters = [];
+
             filters.forEach((p) => {
-              if (p[0] == 'component')
-                component_filters.push(p[1]);
+              var key = p[0];
+              var value = p[1];
+
+              switch (key){
+                case 'component':
+                  component_filters.push(value);
+                  break;
+                case 'version':
+                  version_filters.push(value);
+                  break;
+                case 'milestone':
+                  milestone_filters.push(value);
+                  break;
+              }
             });
 
-            if (component_filters.length == 0){
-              // Use cached components
-              var cached_components = settings.get('components_' + repo) || [];
-              cached_components.forEach((c_f) => {
-                redirect_url += "&component=" + encodeURIComponent(c_f);
-              });
-            }
-            else {
-              // Save comonents
-              settings.set('components_' + repo, component_filters);
-            }
+            redirect_url += processFilter(component_filters, 'components_' + repo, 'component');
+            redirect_url += processFilter(version_filters, 'versions_' + repo, 'version');
+            redirect_url += processFilter(milestone_filters, 'milestones_' + repo, 'milestone');
          }
          return { 'redirectUrl' : redirect_url };
        }, {
