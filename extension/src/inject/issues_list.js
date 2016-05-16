@@ -6,6 +6,8 @@ var modal_html = '<div id="bbbi-modal">' +
   '<div class="aui-buttons">' +
   '<a id="bbbi-open" class="aui-button aui-button-primary" href="">Open</a>' +
   '<a id="bbbi-resolve" class="aui-button aui-button-primary" href="">Resolve</a>' +
+  '<a id="bbbi-close" class="aui-button aui-button-primary" href="">Close</a>' +
+  '<a id="bbbi-hold" class="aui-button aui-button-primary" href="">Hold</a>' +
   '</div>' +
   '</span>' +
   '</div>';
@@ -29,6 +31,17 @@ $('#bbbi-resolve', $modal).click((e) => {
   e.preventDefault();
   updateIssue($modal.issue_number, {"status": "resolved"}, true);
 });
+
+$('#bbbi-close', $modal).click((e) => {
+  e.preventDefault();
+  updateIssue($modal.issue_number, {"status": "closed"}, true);
+});
+
+$('#bbbi-hold', $modal).click((e) => {
+  e.preventDefault();
+  updateIssue($modal.issue_number, {"status": "on hold"}, true);
+});
+
 
 $modalTitle.click((e) => {
   e.preventDefault();
