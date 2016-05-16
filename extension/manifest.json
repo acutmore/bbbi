@@ -15,16 +15,14 @@
       "js/requirejs/require.js",
       "src/bg/main.js"
     ],
-    "persistent": true
+    "persistent": false
   },
   "options_page": "src/options_custom/index.html",
   "permissions": [
     "https://bitbucket.org/*",
     "https://api.bitbucket.org/*",
     "https://positiveanalogue.com/bbbi/*",
-    "identity",
-    "webRequest",
-    "webRequestBlocking"
+    "identity"
   ],
   "content_scripts": [
     {

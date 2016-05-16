@@ -6,7 +6,7 @@ require.config({
         }
     });
 
-require( ["auth", "filters_persistence" ], function(  Auth, filters_persistence ) {
+require( ["auth"], function( Auth ) {
     var auth = new Auth();
 
     // Requests from injected scripts
@@ -22,7 +22,5 @@ require( ["auth", "filters_persistence" ], function(  Auth, filters_persistence 
             sendResponse();
        }
     });
-
-    filters_persistence.init();
 
 });
