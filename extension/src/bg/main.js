@@ -19,7 +19,7 @@ require( ["auth"], function( Auth ) {
             sendResponse({token: auth.getToken()});
             break;
          default:
-            sendResponse();
+            sendResponse('default');
        }
     });
 

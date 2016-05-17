@@ -1,4 +1,4 @@
-getToken((t) => { request.token = t; });
+wakeUpBackground().then(getToken).then((t) => { request.token = t; });
 
 var spin = (function(){
 
@@ -13,10 +13,20 @@ var spin = (function(){
 
 })();
 
-function getToken(consumer){
-  chrome.runtime.sendMessage({action: "get_token"}, (response) => {
-    consumer(response.token);
+function sendMessageToBackend(action){
+  return new Promise(function(resolve, reject){
+    chrome.runtime.sendMessage({action}, resolve);
   });
+}
+
+function wakeUpBackground(){
+  return sendMessageToBackend('WAKEUP').then( r => {
+    return r == null ? wakeUpBackground() : Promise.resolve();
+  });
+}
+
+function getToken(){
+  return sendMessageToBackend('get_token').then((r) => r.token);
 }
 
 function request(url, init, headers, no_retry){
@@ -49,11 +59,9 @@ function request(url, init, headers, no_retry){
 }
 
 function login(){
-  return new Promise( (resolve, reject) => {
-    chrome.runtime.sendMessage({action: "login"}, (response) => {
+  return sendMessageToBackend('login').then((response) => {
       request.token = response.token;
-      resolve(response.token);
-    });
+      return response.token;
   });
 }
 
