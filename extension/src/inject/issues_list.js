@@ -3,7 +3,8 @@ var modal_html = '<div id="bbbi-modal">' +
   '<span class="bbbi-modal-title bbbi-editable">No issue</span><br>' +
   '<span class="bbbi-modal-body bbbi-editable"></span><br>' +
   '<span class="bbbi-modal-actions">' +
-  '<div class="aui-buttons">' +
+  '<div class="aui-buttons"><br>' +
+  '<input type="text" id="bbbi-comment" placeholder="Reason for status change" size=50><br>' +
   '<a id="bbbi-open" class="aui-button aui-button-primary" href="">Open</a>' +
   '<a id="bbbi-resolve" class="aui-button aui-button-primary" href="">Resolve</a>' +
   '<a id="bbbi-close" class="aui-button aui-button-primary" href="">Close</a>' +
@@ -22,24 +23,28 @@ $modal.easyModal({
   overlay: 0.2
 });
 
+var reload = window.location.reload.bind(location);
+
+var $commentInput = $('#bbbi-comment', $modal);
+
 $('#bbbi-open', $modal).click((e) => {
   e.preventDefault();
-  updateIssue($modal.issue_number, {"status": "open"}, true);
+  updateIssue($modal.issue_number, {'status': 'open', 'comment': $commentInput.val() || ''}).then(reload);
 });
 
 $('#bbbi-resolve', $modal).click((e) => {
   e.preventDefault();
-  updateIssue($modal.issue_number, {"status": "resolved"}, true);
+  updateIssue($modal.issue_number, {'status': 'resolved', 'comment': $commentInput.val() || ''}).then(reload);
 });
 
 $('#bbbi-close', $modal).click((e) => {
   e.preventDefault();
-  updateIssue($modal.issue_number, {"status": "closed"}, true);
+  updateIssue($modal.issue_number, {'status': 'closed', 'comment': $commentInput.val() || ''}).then(reload);
 });
 
 $('#bbbi-hold', $modal).click((e) => {
   e.preventDefault();
-  updateIssue($modal.issue_number, {"status": "on hold"}, true);
+  updateIssue($modal.issue_number, {'status': 'on hold', 'comment': $commentInput.val() || ''}).then(reload);
 });
 
 
@@ -50,7 +55,7 @@ $modalTitle.click((e) => {
   var update = window.prompt("New Title", $modal.issue.title);
 
   if (update != null){
-    updateIssue($modal.active_issue_number, {"title": update}, true);
+    updateIssue($modal.active_issue_number, {"title": update}).then(reload);
   }
 });
 
@@ -61,7 +66,7 @@ $modalBody.click((e) => {
   var update = window.prompt("New Description", $modal.issue.content);
 
   if (update != null){
-    updateIssue($modal.active_issue_number, {"content": update}, true);
+    updateIssue($modal.active_issue_number, {"content": update}).then(reload);
   }
 });
 

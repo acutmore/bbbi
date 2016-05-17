@@ -57,7 +57,7 @@ function login(){
   });
 }
 
-function updateIssue(issueNumber, update, reload){
+function updateIssue(issueNumber, update){
   if (issueNumber != null){
 
     var headers = new Headers();
@@ -70,13 +70,7 @@ function updateIssue(issueNumber, update, reload){
         body: JSON.stringify(update)
       },
       headers
-    ).then((issue) => {
-      if (reload)
-         location.reload();
-      else {
-        return issue;
-      }
-    });
+    );
   }
 
   return Promise.reject('no issue number');
