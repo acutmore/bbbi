@@ -27,7 +27,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://bitbucket.org/*/*/issues*"
+        "https://bitbucket.org/*/*/issues",
+        "https://bitbucket.org/*/*/issues?*"
       ],
       "css": [
         "src/inject/inject.css"
@@ -37,6 +38,16 @@
         "js/easyModal/jquery.easyModal.js",
         "src/inject/requests.js",
         "src/inject/issues_list.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://bitbucket.org/*/*/issues/new",
+        "https://bitbucket.org/*/*/issues/new?"
+      ],
+      "js": [
+        "js/jquery/jquery.min.js",
+        "src/inject/new_issue.js"
       ]
     }
   ],
