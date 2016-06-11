@@ -15,14 +15,11 @@
         }
 
         if (dateStr != null) {
-            var today = new Date();
-            var currentYear = today.getFullYear();
-            var currentMonth = today.getMonth();
-            var currentDay = today.getDate();
 
             [yyyy, mm, dd] = dateStr.split(/[_-]/).map(s => parseInt(s));
-
-            if (yyyy <= currentYear && mm <= currentMonth && dd < currentDay) {
+            var mileStoneDate = new Date(yyyy, mm - 1, dd, 23,59);
+            
+            if (mileStoneDate.getTime() < Date.now()){
                 console.log("BBBI - moving milestone to end of list", e.innerText);
                 e.remove();
                 $milestoneSelect[0].appendChild(e);
