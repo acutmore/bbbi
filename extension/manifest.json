@@ -43,7 +43,8 @@
     {
       "matches": [
         "https://bitbucket.org/*/*/issues/new",
-        "https://bitbucket.org/*/*/issues/new?"
+        "https://bitbucket.org/*/*/issues/new?",
+        "https://bitbucket.org/*/*/issues/edit/*"
       ],
       "js": [
         "js/jquery/jquery.min.js",
